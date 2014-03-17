@@ -35,6 +35,10 @@ Description
         File name to save the output, it writes to the file in directory where the script is executed
         If this option is not specified, it prints to stdout.
 
+    -t csv, --type=csv [not implemented yet]
+        Output format type. Deafult is Doku-wiki table format
+        Currently only CSV is supported.
+
     -h, --help
         Brings up this help page
 
