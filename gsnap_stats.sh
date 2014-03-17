@@ -3,7 +3,7 @@
 # It needs the full path for the input fastq files (for counting reads) and full path for the output samfiles.
 # prints output to stdout by default
 # Note: It only works with SAM output and prints out in a docu wiki table format only!
-# 03/17/2014
+# 17 March, 2014
 # Arun Seetharam <arnstrm@iastate.edu>
 
 scriptName="${0##*/}"
