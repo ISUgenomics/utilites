@@ -1,6 +1,6 @@
 #!/bin/bash
 # This is a bash script to delete all running jobs.
-# 04/17/2014
+# 04/06/2014
 # Arun Seetharam <arnstrm@iastate.edu>
 
 scriptName="${0##*/}"
