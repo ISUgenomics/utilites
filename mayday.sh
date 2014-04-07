@@ -12,7 +12,7 @@ while read line
 do
   jobid=$(echo $line |cut -d "." -f 1);
       if  [[ $jobid =~ $re ]] ; then
-      echo "qdel $jobid";
+      qdel $jobid;
       fi
 done
 
