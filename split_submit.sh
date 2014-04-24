@@ -13,9 +13,10 @@
 # 23 April, 2014
 
 if [ $# -lt 4 ] ; then
-echo "split_submit.sh <Line #> <splits> <PacBio fastq file, softlinked> <frg file>"
-exit 0
+  echo "split_submit.sh <Line #> <splits> <PacBio fastq file, softlinked> <frg file>"
+  exit 0
 fi
+
 LINE="$1"
 NSPLIT="$2"
 FILE="$3"
