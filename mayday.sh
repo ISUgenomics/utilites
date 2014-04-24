@@ -13,6 +13,7 @@ do
   jobid=$(echo $line |cut -d "." -f 1);
       if  [[ $jobid =~ $re ]] ; then
       qdel $jobid;
+      echo "Terminating $jobid";
       fi
 done
 
