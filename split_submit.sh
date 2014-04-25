@@ -1,10 +1,4 @@
 #!/bin/bash
-# This script runs the pacbio error correction after spliting the input fastq reads (pacbio).
-# Specify the number of splits ( ~35K pacbio sequences takes about 15 hrs to complete,
-# using ~200M illumina reads for correction). Line # is any unique identifier for your input.
-# Fullpath for frg file is required. 
-#
-# NOTE: RUN THIS ON A SEPARATE FOLDER, WITH JUST THE PACBIO FILE (SOFTLINKED)
 #
 # PacBio is configured based on this blog: http://www.homolog.us/blogs/blog/2013/02/05/pacbiotoca-for-error-correcting-pacbio-reads
 #
@@ -12,15 +6,85 @@
 # Arun Seetharam <arnstrm@iastate.edu>, Genome Informatics Faciltiy
 # 23 April, 2014
 
-if [ $# -lt 4 ] ; then
-  echo "split_submit.sh <Line #> <splits> <PacBio fastq file, softlinked> <frg file>"
-  exit 0
-fi
+scriptName="${0##*/}"
+function printUsage() {
+    cat <<EOF
 
-LINE="$1"
-NSPLIT="$2"
-FILE="$3"
-FRG="$4"
+Synopsis
+
+    $scriptName [-h | --help] -l line -s splits path/to/pacbio_fastq path/to/illumina_frg_file
+
+Description
+
+    This scripts breaks the pacbio subreads FASTQ files into usersupplied number of peices and submits for error correction
+    Job script is degined to use ISU Lightning 3 cluster, scpecifically long_1node queue (1 node, 32 procs with 256Gb RAM).
+    Make sure you create a softlink for the original FASTQ file (pacbio) and run it in a separate directory.
+
+	-l, --line=line_name
+        line name to be used to identify the files. Any name can be specified (of any length). 
+        Generally a 1-4 letter suffix for identification purpose is suffecient
+
+	-s, --splits=N
+        generate N number of splits to run the error correction. Generally, if the number of FASTQ reads is < 35K,
+        it finishes within 20 hrs (with aproximately 200M Illumina reads)		
+
+	path/to/pacbio_fastq
+        full path to the FASTQ files (generated from PacBio bas.h5 files) for error correction
+        script assumes the files have *.fastq extension and is softlinked (DO NOT RUN ON ORIGINAL FILE)
+
+    path/to/illumina_frg_file
+        full path to the FRG file (generated from Illumina FASTQ files)
+
+    -h, --help
+        Brings up this help page
+
+Author
+
+    Arun Seetharam, Genome Informatics Facilty, Iowa State University
+    arnstrm@iastate.edu
+    23 April, 2014
+
+
+EOF
+}
+if [ $# -lt 1 ] ; then
+    printUsage
+    echo -e "Please specify the ID, splits, fastq file and frg file for processing\n\n"
+	exit 1
+fi
+while :
+do
+    case $1 in
+        -h | --help | -\?)
+            printUsage
+            exit 0
+            ;;
+        -l | --line)
+            LINE=$2
+            shift 2
+            ;;
+        -s | --splits)
+            NSPLIT=$2
+            shift 2
+            ;;
+        --)
+            shift
+            break
+            ;;
+        -*)
+            printf >&2 'WARNING: Unknown option (ignored): %s\n' "$1"
+            shift
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+
+#LINE="$1"
+#NSPLIT="$2"
+FILE="$1"
+FRG="$2"
 PRE=$(pwd)
 BASE=$(echo ${FILE%%.*})
 
