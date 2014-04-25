@@ -19,10 +19,11 @@ Description
     This scripts breaks the pacbio subreads FASTQ files into usersupplied number of peices and submits for error correction
     Job script is degined to use ISU Lightning 3 cluster, scpecifically long_1node queue (1 node, 32 procs with 256Gb RAM).
     Make sure you create a softlink for the original FASTQ file (pacbio) and run it in a separate directory.
+    Error corrected output will be named as ec_NNNNNN.fastq, where NNNNNN is the time stamp obtained form the input filename.
 
 	-l, --line=line_name
         line name to be used to identify the files. Any name can be specified (of any length). 
-        Generally a 1-4 letter suffix for identification purpose is suffecient
+        Generally a 1-4 letter suffix for identification purpose is suffecient.
 
 	-s, --splits=N
         generate N number of splits to run the error correction. Generally, if the number of FASTQ reads is < 35K,
